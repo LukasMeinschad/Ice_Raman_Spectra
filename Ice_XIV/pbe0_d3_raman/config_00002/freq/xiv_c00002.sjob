@@ -8,16 +8,13 @@
 
 source /usr/local/_tci_software_environment_.sh
 module purge
-module load rune/crystal/23_v1.0.1_omp
+module load rune/crystal/17_v1.0.2
 
 #set some necessary environment before running
-export CRY23_SCRDIR="/scratch/lme"
 export CRY17_SCRDIR="/scratch/lme"
-# hybrid MPI/OpenMP build: 40 MPI processes x 1 OpenMP thread = 40 cores
-export OMP_NUM_THREADS=1
 
 #run your job
 # run only if the optimisation converged; its geometry (with symmetry) -> fort.34
 grep -q "OPT END - CONVERGED" ../opt/xiv_c00002.out 2>/dev/null || { echo 'optimisation not converged - frequencies skipped'; exit 1; }
 cp ../opt/xiv_c00002.gui ./xiv_c00002.gui || { echo 'opt geometry missing'; exit 1; }
-runmpi23 40 xiv_c00002
+runmpi17 40 xiv_c00002

@@ -1,4 +1,4 @@
-# Ice XIV: ordered models for Raman calculations (CRYSTAL23, PBE0-D3 / POB-TZVP)
+# Ice XIV: ordered models for Raman calculations (CRYSTAL 17, PBE0-D3 / POB-TZVP)
 
 Source structure: `14_XIV_P212121_1.cif` : D2O ice XIV,
 P2_12_12_1, a = 8.3499, b = 8.1391, c = 4.0825 A, 3 O in the asymmetric unit (12 D2O / cell).
@@ -48,22 +48,18 @@ calculated energies (Boltzmann).
   which is **a** in the standardised P2_12_12_1 setting), TOLINTEG 10 10 10 10 18, FMIXING 70, DIIS
 * freq: EXTERNAL (optimised geometry incl. symmetry) + FREQCALC / INTENS / INTRAMAN / INTCPHF ... END
   (IR + Raman intensities via CPHF/CPKS; PBE0 is supported by CPHF/CPKS, unlike HSEsol in CRYSTAL 17)
-* 40 cores, CPU_rune, CRYSTAL23
+* 40 cores, CPU_rune, CRYSTAL 17 (`rune/crystal/17_v1.0.2`, `runmpi17`), as for the ice Ih / VI runs
 
 ```bash
 cd Ice_XIV/pbe0_d3_raman
 ./submit_all.sh          # 3 opt jobs + dependent freq jobs (3 x 40 cores at a time)
 ```
 
-**Check before submitting** (I could not verify these on rune):
-1. module: `rune/crystal/23_v1.0.1_omp` (hybrid MPI/OpenMP build). The .sjob files run 40 MPI
-   processes with `OMP_NUM_THREADS=1`; for a hybrid run reduce `--ntasks-per-node`/the runmpi23 core
-   count and raise `OMP_NUM_THREADS` so that the product stays 40.
-2. the name of the CRYSTAL23 run script (`runmpi23`; may differ on rune) and its scratch variable
-   (`CRY23_SCRDIR`)
-3. the CPHF/Raman keywords against the CRYSTAL23 manual (`INTRAMAN`, `INTCPHF ... END`).
-   Optional: `RAMANEXP` (temperature, laser wavelength) inside FREQCALC to match your measurement.
-4. **Isotopes:** the calculation uses H masses (H2O ice). The CIF is a D2O structure. If the
+**Notes**
+1. PBE0 is among the functionals supported by CPHF/CPKS in CRYSTAL 17 (HSEsol is not), so
+   `INTRAMAN` + `INTCPHF` should run. Optional: `RAMANEXP` (temperature, laser wavelength) inside
+   FREQCALC to match your measurement.
+2. **Isotopes:** the calculation uses H masses (H2O ice). The CIF is a D2O structure. If the
    measured sample is D2O, add D masses (FREQCALC keyword `ISOTOPES`) to the frequency inputs.
 
 ## Regenerating
@@ -74,7 +70,7 @@ python enumerate_partial_order.py ../Ice_XIV/14_XIV_P212121_1.cif --name "ice XI
 python make_crystal_jobs.py ../Ice_XIV/ordered_models \
     --opt-template ../Ice_XIV/templates/opt_pbe0d3.d12 \
     --freq-template ../Ice_XIV/templates/freq_pbe0d3_raman.d12 \
-    --sjob-template ../Ice_XIV/templates/crystal23_rune.sjob \
+    --sjob-template ../Ice_XIV/templates/crystal17_rune.sjob \
     --prefix xiv --jobname XIV --ncores 40 --out ../Ice_XIV/pbe0_d3_raman
 python job_status.py ../Ice_XIV/pbe0_d3_raman        # progress / time estimates
 ```
