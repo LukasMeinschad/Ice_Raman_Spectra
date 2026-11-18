@@ -56,7 +56,9 @@ cd Ice_XIV/pbe0_d3_raman
 ```
 
 **Check before submitting** (I could not verify these on rune):
-1. the CRYSTAL23 module name in the .sjob files (`module load rune/crystal/23`; see `module avail crystal`)
+1. module: `rune/crystal/23_v1.0.1_omp` (hybrid MPI/OpenMP build). The .sjob files run 40 MPI
+   processes with `OMP_NUM_THREADS=1`; for a hybrid run reduce `--ntasks-per-node`/the runmpi23 core
+   count and raise `OMP_NUM_THREADS` so that the product stays 40.
 2. the name of the CRYSTAL23 run script (`runmpi23`; may differ on rune) and its scratch variable
    (`CRY23_SCRDIR`)
 3. the CPHF/Raman keywords against the CRYSTAL23 manual (`INTRAMAN`, `INTCPHF ... END`).

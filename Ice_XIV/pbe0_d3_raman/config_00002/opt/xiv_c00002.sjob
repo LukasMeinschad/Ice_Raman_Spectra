@@ -8,12 +8,13 @@
 
 source /usr/local/_tci_software_environment_.sh
 module purge
-# CHECK the exact CRYSTAL23 module name on rune:  module avail crystal
-module load rune/crystal/23
+module load rune/crystal/23_v1.0.1_omp
 
 #set some necessary environment before running
 export CRY23_SCRDIR="/scratch/lme"
 export CRY17_SCRDIR="/scratch/lme"
+# hybrid MPI/OpenMP build: 40 MPI processes x 1 OpenMP thread = 40 cores
+export OMP_NUM_THREADS=1
 
 #run your job
 runmpi23 40 xiv_c00002
