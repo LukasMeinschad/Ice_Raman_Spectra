@@ -1,0 +1,22 @@
+# C.G. Salzmann, A. Hallbrucker, J.L. Finney, E. Mayer, Chem. Phys. Lett. 429, 469 (2006), Table 1:
+# Raman peak frequencies of H2O (D2O) ice XIV containing 9.0 (11) mol% HOD, recovered, 80 K, ~10 mbar,
+# He-Ne laser 632.8 nm. Assignment: a coupled O-H (O-D) stretch, b decoupled O-H (O-D) stretch (HOD),
+# c librations, d translations. Empty = not observed / not resolved.
+H2O_cm-1,D2O_cm-1,assignment,label
+3407,2521,a,~3407
+3326,2489,a,3326
+3214,2370,a,3214 (strongest)
+3368,2500,b,3368 (HOD)
+,2480,b,
+3346,2471,b,3346 (HOD)
+3317,2454,b,3317 (HOD)
+867,631,c,867
+790,562,c,790
+562,413,c,562
+527,395,c,527
+488,360,c,488
+462,345,c,462
+413,,c or d,413
+314,300,d,314
+241,233,d,241
+214,210,d,214
