@@ -62,6 +62,9 @@ def main():
     p.add_argument("--title", default="Raman spectrum")
     p.add_argument("--skip-assign", default="b", help="reference assignments not drawn (b = decoupled HOD stretches)")
     p.add_argument("--out-name", default="raman_spectra.png")
+    p.add_argument("--exp", default=None,
+                   help="digitised experimental spectra, file[:label];... (csv: raman_shift_cm-1,intensity); "
+                        "each is drawn in the region it overlaps, normalised to its maximum there")
     a = p.parse_args()
 
     jobs = list(csv.DictReader(open(os.path.join(a.jobs, "jobs.csv"))))
@@ -108,6 +111,13 @@ def main():
             if x[0] and x[2].strip() not in a.skip_assign.split(","):
                 ref.append((float(x[0]), x[2], x[3]))
 
+    exps = []
+    if a.exp:
+        for item in a.exp.split(";"):
+            fn, _, lab = item.partition(":")
+            xy = np.array([[float(v) for v in l.split(",")[:2]] for l in open(fn) if l[:1].isdigit()])
+            exps.append((xy[np.argsort(xy[:, 0])], lab or os.path.basename(fn)))
+
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -124,6 +134,13 @@ def main():
         top = max(cv[s].max() for _, cv, _, _ in curves)
         for lab, cv, col, lw in curves:
             ax.plot(grid[s], cv[s] / top, color=col, lw=lw, label=lab)
+        for k, (xy, lab) in enumerate(exps):
+            se = (xy[:, 0] >= lo) & (xy[:, 0] <= hi)
+            if se.sum() < 5:
+                continue
+            ye = xy[se, 1] - xy[se, 1].min()
+            ax.plot(xy[se, 0], ye / ye.max(), color="#c0392b", lw=1.3, zorder=3,
+                    label=lab if not any(l == lab for l in ax.get_legend_handles_labels()[1]) else None)
         for nu, asg, lab in ref:
             if lo <= nu <= hi:
                 ax.axvline(nu, color="#c0392b", ls=":", lw=0.9, zorder=0)
@@ -138,7 +155,12 @@ def main():
                       fontsize=10, pad=24)
     axes[1].set_title("lattice region (librations, translations)", fontsize=10, pad=24)
     axes[1].plot([], [], color="#c0392b", ls=":", label="experiment (reference)")
-    axes[1].legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), borderaxespad=0, frameon=True, edgecolor="black",
+    h, l = axes[1].get_legend_handles_labels()
+    for hh, ll in zip(*axes[0].get_legend_handles_labels()):
+        if ll not in l:
+            h.insert(len(res), hh)
+            l.insert(len(res), ll)
+    axes[1].legend(h, l, loc="upper left", bbox_to_anchor=(1.02, 1.0), borderaxespad=0, frameon=True, edgecolor="black",
                    fancybox=False, fontsize=8.5)
     cond = (f"intensities at {a.temp:g} K, {a.laser:g} nm" if a.laser else "raw CRYSTAL intensities") + \
         f"; Lorentzian FWHM {a.fwhm:g} cm$^{{-1}}$"
