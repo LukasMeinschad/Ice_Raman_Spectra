@@ -41,6 +41,36 @@ lambda = f/(1-f) = 1.5:
 which reproduces an average occupancy of 0.60. Alternatively, weights can come from the
 calculated energies (Boltzmann).
 
+## GenIce structure (`xiv_genice.cif`) and the 1x1x2 supercell
+
+`genice2 --rep 1 1 1 14` gives a 1x1x2 cell (8.3499 x 8.1391 x 8.165 A, 24 H2O). GenIce's ice 14
+lattice keeps the fully ordered bonds of ice XIV (all 32 fully occupied D sites are occupied) and
+randomises only the partially ordered O1-O2 bonds; with its default depolarisation the result has
+zero net dipole and occupancies D12/D4 = D5/D13 = 0.5/0.5.
+
+The 1x1x2 supercell has 16 ice-rule configurations = 6 ordered models (`ordered_models_1x1x2/`,
+`enumerate_partial_order.py --supercell 1 1 2`):
+
+| 1x1x2 model | space group | occupancy D12/D5 | multiplicity | net dipole | note |
+|---|---|---|---|---|---|
+| 1 | P2_1 | 0.50 | 4 | 0 | **= the GenIce structure** (`identify_topology.py XIV --cell 1x1x2`) |
+| 2 | P2_1 | 0.75 | 4 | yes | new in the supercell |
+| 3 | P2_12_12_1 | 1.00 | 1 | 0 | = unit-cell model 1 |
+| 4 | P2_1 | 0.25 | 4 | yes | new in the supercell |
+| 5 | P2_1 | 0.50 | 2 | yes | = unit-cell model 2 |
+| 6 | P2_12_12_1 | 0.00 | 1 | 0 | = unit-cell model 3 |
+
+`pbe0_d3_raman_1x1x2/config_00001/` contains the opt + freq job for the GenIce structure (1x1x2
+model 1, built from the experimental O/D positions; it has the same H-bond topology as GenIce's
+coordinates, so the ATOMONLY optimisation leads to the same structure). Same settings as below,
+except SHRINK 0 8 / 4 4 4 (all axes ~8 A). 72 atoms, P2_1: expect roughly 8x the cost of a
+unit-cell model per SCF.
+
+```bash
+cd Ice_XIV/pbe0_d3_raman_1x1x2
+./submit_all.sh
+```
+
 ## Jobs (`pbe0_d3_raman/`)
 
 * opt: OPTGEOM ATOMONLY (experimental cell kept), TOLDEG 1e-5, TOLDEX 4e-5, TOLDEE 10, MAXCYCLE 200;
