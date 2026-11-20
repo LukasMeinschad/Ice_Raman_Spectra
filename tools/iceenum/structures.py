@@ -120,6 +120,26 @@ STRUCTURES = {
             "1x1x2": [[1, 0, 0], [0, 1, 0], [0, 0, 2]],     # 24 H2O (GenIce cell)
         },
     ),
+    # ---------------------------------------------------------------- XII
+    "XII": IceStructure(
+        name="ice XII",
+        space_group="I-42d",
+        sg_number=122,
+        hall_number=399,
+        # C. Lobban, J.L. Finney, W.F. Kuhs, Nature 391, 268 (1998): D2O, 260 K, 0.55 GPa
+        # (cell and O positions as in Ice_XII/ice_xii.cif of the Ice_Raman_Spectra repository)
+        cell=(8.304, 8.304, 4.024, 90.0, 90.0, 90.0),
+        oxygens=[(0.0, 0.0, 0.0), (0.3643, 0.25, 0.125)],     # O1 4a, O2 8d
+        reference="Lobban, Finney, Kuhs, Nature 391, 268 (1998); Ice_XII/ice_xii.cif",
+        notes="12 H2O in the body-centred cell (6 in the primitive cell), fully H-disordered "
+              "(all D occupancies 1/2); the partially ordered counterpart is ice XIV. GenIce's ice 12 "
+              "cell is 1x1x2 (24 H2O).",
+        presets={
+            "unit": [[1, 0, 0], [0, 1, 0], [0, 0, 1]],      # 12 H2O
+            "primitive": [[-0.5, 0.5, 0.5], [0.5, -0.5, 0.5], [0.5, 0.5, -0.5]],   # 6 H2O
+            "1x1x2": [[1, 0, 0], [0, 1, 0], [0, 0, 2]],     # 24 H2O (GenIce cell)
+        },
+    ),
     # ---------------------------------------- validation against GrEnum runs
     "III": IceStructure(
         name="ice III (GrEnum test case)",

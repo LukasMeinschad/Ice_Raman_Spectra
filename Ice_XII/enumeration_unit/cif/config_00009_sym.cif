@@ -1,0 +1,38 @@
+data_config_00009
+_symmetry_space_group_name_H-M 'Fdd2'
+_space_group_IT_number 43
+_cell_length_a 11.743629
+_cell_length_b 11.743629
+_cell_length_c 4.024000
+_cell_angle_alpha 90.000000
+_cell_angle_beta 90.000000
+_cell_angle_gamma 90.000000
+loop_
+_space_group_symop_operation_xyz
+'x,y,z'
+'-x,-y,z'
+'-x+1/4,y+3/4,z+3/4'
+'x+1/4,-y+3/4,z+3/4'
+'x+1/2,y,z+1/2'
+'-x+1/2,-y,z+1/2'
+'-x+3/4,y+3/4,z+1/4'
+'x+3/4,-y+3/4,z+1/4'
+'x,y+1/2,z+1/2'
+'-x,-y+1/2,z+1/2'
+'-x+1/4,y+1/4,z+1/4'
+'x+1/4,-y+1/4,z+1/4'
+'x+1/2,y+1/2,z'
+'-x+1/2,-y+1/2,z'
+'-x+3/4,y+1/4,z+3/4'
+'x+3/4,-y+1/4,z+3/4'
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O 0.25000000 0.25000000 0.50000000
+O2 O 0.19285000 0.55715000 0.37500000
+H1 H 0.12595196 0.28676093 0.25878655
+H2 H 0.22961093 0.68119804 0.13378655
+H3 H 0.01582925 0.26582925 0.94424430
