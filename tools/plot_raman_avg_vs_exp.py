@@ -70,6 +70,7 @@ def main():
     p.add_argument("--ref", help="reference band list (H2O_cm-1,...,assignment,label)")
     p.add_argument("--skip-assign", default="b")
     p.add_argument("--title", default="Ice XIV: calculated (PBE0-D3, weighted average) vs. experiment")
+    p.add_argument("--show-models", action="store_true", help="also draw the individual models (thin lines)")
     p.add_argument("-o", "--out", default=None)
     a = p.parse_args()
 
@@ -98,6 +99,9 @@ def main():
                                       el, lo, LATTICE[1]) for s in tr])]
     y0 = spectrum(models, w, a.fwhm)
     y1 = spectrum(models, w, a.fwhm, s_oh, s_lib, a.s_trans, a.lib_min)
+    one = lambda c, *sc: spectrum({c: models[c]}, {c: 1.0}, a.fwhm, *sc)
+    ind = [{c: one(c) for c in models}, {c: one(c, s_oh, s_lib, a.s_trans, a.lib_min) for c in models}]
+    mcol = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6", "#e87ba4"]
     print(f"scale factors: stretch {s_oh:.4f}, librations {s_lib:.4f} (> {a.lib_min:g} cm-1), "
           f"translations {a.s_trans:.4f}")
     for tag, y in (("unscaled", y0), ("scaled", y1)):
@@ -132,7 +136,11 @@ def main():
             g = (GRID >= lo) & (GRID <= hi)
             se = (exp[:, 0] >= lo) & (exp[:, 0] <= hi)
             x.plot(exp[se, 0], norm(exp[se, 1]), color="#c0392b", lw=1.5, label=a.exp_label)
-            x.plot(GRID[g], norm(y[g]), color="black", lw=1.5, label="calculated, weighted average")
+            if a.show_models:
+                for k, (c, yc) in enumerate(ind[i].items()):
+                    x.plot(GRID[g], norm(yc[g]), color=mcol[k % 5], lw=0.9, alpha=0.8,
+                           label=f"model {c} (weight {w[c]:.2f})")
+            x.plot(GRID[g], norm(y[g]), color="black", lw=1.8, label="calculated, weighted average")
             for nu, lb in ref:
                 if lo <= nu <= hi:
                     x.axvline(nu, color="#c0392b", ls=":", lw=0.8, zorder=0)
