@@ -1,0 +1,19 @@
+# T. Shigenari, K. Abe, J. Chem. Phys. 136, 174504 (2012): Raman spectra of H2O ice XI (single crystal, ~50 K).
+# Stretching bands: Table X, Lorentzian fit of the a(cc)b spectrum (centre nu0, FWHM gamma, +-1-4 cm-1).
+# Librations: Table IV (spectra of Fig. 4, accuracy +-2 cm-1 for sharp modes); intensity class as given.
+# Assignments as in the paper (symmetry labels of the C2v (Cmc2_1) modes; LO/TO where given).
+H2O_cm-1,fwhm_cm-1,region,intensity,assignment,label
+3086.8,38.0,stretch,strongest,band 1 nu1 in-phase (A1),3087
+3210.0,75.1,stretch,s,band 2 (nu3 TO in the Ih picture),3210
+3326.9,160.5,stretch,m,band 3 (nu3 LO in the Ih picture),3327
+3414.0,71.2,stretch,w,band 4 (nu1 out-of-phase in the Ih picture),3414
+600,,libration,vw,B1-2,600
+630,,libration,vs (cc),A1-1 A2-1 A2-3,630
+685,,libration,m,A2-4 B2-2,685
+800,,libration,m,A2-2 B1-1,800
+815,,libration,m,A1-2 B2-1(TO) B1-3(TO),815
+950,,libration,s broad,B1-3(LO),950
+985,,libration,mw,B1-4(TO),985
+1020,,libration,m,B1-4(LO),1020
+1070,,libration,m,B2-1(LO),1070
+1100,,libration,s (cc) broad,combination libration + translation,1100
